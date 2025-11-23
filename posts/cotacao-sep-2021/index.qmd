@@ -1,0 +1,50 @@
+---
+title: "Cotação do Dólar - Setembro 2021"
+format: html
+jupyter: python3
+image: "image.png"
+---
+
+# Cotação do dólar para Setembro/2021
+
+Este gráfico foi gerado a partir dos dados da API do Banco Central. O código importa requests, pandas e matplotlib.
+Ele usa requests para buscar, em uma API, os valores históricos do dólar em formato JSON.
+
+Depois, transforma esses dados em um DataFrame do pandas, convertendo as datas para datetime e os valores para número, deixando tudo organizado para análise.
+
+Com os dados prontos, o código usa o matplotlib para criar um gráfico de linha, onde o eixo X mostra as datas e o eixo Y mostra a cotação.
+Também adiciona título e rótulos para facilitar a leitura.
+
+No final, o gráfico é exibido mostrando como o dólar variou ao longo do tempo.
+
+```{python}
+import requests
+import pandas as pd
+import plotly.express as px
+from datetime import datetime
+
+def cotacao_periodo(mmyyyy):
+    mes = mmyyyy[:2]
+    ano = mmyyyy[2:]
+
+    data_inicial = f"{mes}-01-{ano}"
+    fim_do_mes = pd.Period(f"{ano}-{mes}").days_in_month
+    data_final = f"{mes}-{fim_do_mes:02d}-{ano}"
+
+    url = (
+        "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/"
+        f"CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)"
+        f"?@dataInicial='{data_inicial}'&@dataFinalCotacao='{data_final}'"
+        "&$orderby=dataHoraCotacao&$format=json"
+    )
+
+    res = requests.get(url).json()["value"]
+    df = pd.DataFrame(res)
+    df["data"] = pd.to_datetime(df["dataHoraCotacao"]).dt.date
+    df = df.groupby("data")["cotacaoVenda"].last().reset_index()
+
+    fig = px.line(df, x="data", y="cotacaoVenda", title=f"Cotação do Dólar - {mes}/{ano}")
+    fig.show()
+
+cotacao_periodo("092021")
+```

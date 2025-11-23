@@ -1,0 +1,41 @@
+---
+title: "Regressão linear"
+format: html
+jupyter: python3
+image: "image.png"
+---
+
+# Regressão linear
+
+Esta atividade tem como objetivo analisar a relação entre duas variáveis: anos de estudo (X) e salário (Y). Para isso, utilizamos uma técnica estatística chamada regressão linear simples, que permite estimar uma linha que melhor representa a relação entre essas duas grandezas. A partir dessa linha estimada, podemos compreender como o salário tende a variar conforme aumentam os anos de estudo.
+
+```{python}
+import pandas as pd
+import numpy as np
+from plotnine import (
+    ggplot, aes, geom_point, geom_abline, ggsave
+)
+
+with open("x.txt", "r") as f:
+    valores_x = [float(l.strip()) for l in f]
+
+with open("y.txt", "r") as f:
+    valores_y = [float(l.strip()) for l in f]
+
+df = pd.DataFrame({
+    "x": valores_x,
+    "y": valores_y
+})
+
+b, a = np.polyfit(df["x"], df["y"], 1)
+
+plot = (
+    ggplot(df, aes("x", "y"))
+    + geom_point()
+    + geom_abline(intercept=a, slope=b)
+)
+
+
+plot.draw()
+
+```

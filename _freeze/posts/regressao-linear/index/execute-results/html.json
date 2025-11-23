@@ -1,0 +1,12 @@
+{
+  "hash": "e787610d002232437c5352fe8847e48b",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"Regressão linear\"\nformat: html\njupyter: python3\nimage: \"image.png\"\n---\n\n# Regressão linear\n\nEsta atividade tem como objetivo analisar a relação entre duas variáveis: anos de estudo (X) e salário (Y). Para isso, utilizamos uma técnica estatística chamada regressão linear simples, que permite estimar uma linha que melhor representa a relação entre essas duas grandezas. A partir dessa linha estimada, podemos compreender como o salário tende a variar conforme aumentam os anos de estudo.\n\n::: {#1fdedd4b .cell execution_count=1}\n``` {.python .cell-code}\nimport pandas as pd\nimport numpy as np\nfrom plotnine import (\n    ggplot, aes, geom_point, geom_abline, ggsave\n)\n\nwith open(\"x.txt\", \"r\") as f:\n    valores_x = [float(l.strip()) for l in f]\n\nwith open(\"y.txt\", \"r\") as f:\n    valores_y = [float(l.strip()) for l in f]\n\ndf = pd.DataFrame({\n    \"x\": valores_x,\n    \"y\": valores_y\n})\n\nb, a = np.polyfit(df[\"x\"], df[\"y\"], 1)\n\nplot = (\n    ggplot(df, aes(\"x\", \"y\"))\n    + geom_point()\n    + geom_abline(intercept=a, slope=b)\n)\n\n\nplot.draw()\n```\n\n::: {.cell-output .cell-output-display execution_count=1}\n![](index_files/figure-html/cell-2-output-1.png){width=691 height=499}\n:::\n:::\n\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

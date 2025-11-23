@@ -1,0 +1,16 @@
+---
+title: "About"
+image: profile.png
+about:
+  template: jolla
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/leandro-borotta-ab36b224b/
+    - icon: github
+      text: Github
+      href: https://github.com/LeandroBorotta
+
+---
+
+Blog com as tarefas realizadas durante o segundo semestre do professor Thiago

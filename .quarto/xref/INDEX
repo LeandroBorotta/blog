@@ -1,0 +1,23 @@
+{
+  "index.qmd": {
+    "index.html": "a5a73aab"
+  },
+  "about.qmd": {
+    "about.html": "7ba305b7"
+  },
+  "posts/post-with-code/index.qmd": {
+    "index.html": "a08dc74d"
+  },
+  "posts/welcome/index.qmd": {
+    "index.html": "34a47f1a"
+  },
+  "posts/cotacao-sep-2021/index.qmd": {
+    "index.html": "a084a9f9"
+  },
+  "posts/frota-onibus/index.qmd": {
+    "index.html": "06d2ced3"
+  },
+  "posts/regressao-linear/index.qmd": {
+    "index.html": "c4f00fb3"
+  }
+}

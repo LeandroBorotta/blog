@@ -1,0 +1,67 @@
+---
+title: "Frota Onibus"
+format: html
+jupyter: python3
+image: "image.png"
+---
+
+# Frota Onibus
+
+O código desenvolvido tem como objetivo exibir em um mapa interativo, utilizando a biblioteca Folium, todas as paradas da linha de ônibus 6450-10 da SPTrans, além de mostrar a posição atual do veículo em tempo real. A aplicação permite visualizar facilmente o trajeto da linha e acompanhar o deslocamento do ônibus.
+
+```{python}
+import os
+import requests
+from dotenv import load_dotenv
+import folium
+
+load_dotenv(".env")
+
+s = requests.Session()
+login = s.post(
+    "http://api.olhovivo.sptrans.com.br/v2.1/Login/Autenticar",
+    params={"token": "10bf2c6abc762d12fcc19ee949a430a4c813bece71470d7c3e53bd49f9bb1d6e"}
+)
+
+codigo_linha = 1 
+
+
+res = s.get(
+    "http://api.olhovivo.sptrans.com.br/v2.1/Parada/BuscarParadasPorLinha",
+    params={"codigoLinha": codigo_linha}
+)
+paradas = res.json()
+
+
+
+lat0 = paradas[0]["py"]
+lon0 = paradas[0]["px"]
+
+m = folium.Map(location=[lat0, lon0], zoom_start=14)
+
+for p in paradas:
+    folium.Marker(
+        location=[p["py"], p["px"]],
+        popup=p["np"],
+        icon=folium.Icon(color="blue", icon="info-sign")
+    ).add_to(m)
+
+
+pos = s.get(
+    "http://api.olhovivo.sptrans.com.br/v2.1/Posicao/Linha",
+    params={"codigoLinha": codigo_linha}
+).json()
+
+veiculos = pos.get("vs", [])
+
+
+for v in veiculos:
+    folium.Marker(
+        location=[v["py"], v["px"]],
+        popup=f"Prefixo: {v['p']}",
+        icon=folium.Icon(color="red", icon="bus")
+    ).add_to(m)
+
+m
+
+```
